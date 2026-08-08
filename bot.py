@@ -129,7 +129,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ======================
 async def auto_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
      if not update.message or not update.message.text:
-    return
+       return
 
 
     user_id = update.effective_user.id
