@@ -144,7 +144,8 @@ async def auto_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
             chat_id=ADMIN_ID,
             text=(
                 "🙏 አዲስ የጸሎት ጥያቄ\n\n"
-                f"👤 ከ: {update.effective_user.first_name}\n"
+                f"👤 ከ: {update.effective_user.full_name}\n\n"
+
                 f"🆔 User ID: {user_id}\n\n"
                 f"📝 ጥያቄ:\n{text}"
             ),
