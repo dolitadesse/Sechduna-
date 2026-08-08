@@ -138,7 +138,7 @@ async def auto_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # ======================
     # PRAYER REQUEST
     # ======================
-    if user_prayer_mode.get(user_id):
+        if user_prayer_mode.get(user_id):
 
         await context.bot.send_message(
             chat_id=ADMIN_ID,
