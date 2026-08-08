@@ -131,9 +131,9 @@ async def auto_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if not update.messageornotupdate.message.text:
                 return
 
-        user_እድ = update.effective_user.id
+        user_id = update.effective_user.id
 
-    text = update.message.text.strip().lower()
+        text = update.message.text.strip().lower()
 
 
     # ======================
