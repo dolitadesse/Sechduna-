@@ -2,7 +2,9 @@ import random
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 
-TOKEN = "8610354465:AAHmXBD2q-bfiBXsBmqYmA3SBlN4GMBvwxU"
+import os
+TOKEN = os.environ.get("BOT_TOKEN")
+
 ADMIN_ID = 123456789
 user_prayer_mode = {}
 
