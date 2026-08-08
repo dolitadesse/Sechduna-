@@ -132,7 +132,6 @@ async def auto_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 return
 
         user_id = update.effective_user.id
-
         text = update.message.text.strip().lower()
 
 
