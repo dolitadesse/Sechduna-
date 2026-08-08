@@ -23,12 +23,10 @@ if not TOKEN:
 # ======================
 # ADMIN INFO
 # ======================
-# Telegram username
 ADMIN_USERNAME = "@Abd10t"
 
 # IMPORTANT:
-# Replace 123456789 with the numeric Telegram User ID
-# of @Abd10t when you get it.
+# Replace this number with your real Telegram User ID.
 ADMIN_ID = 123456789
 
 
@@ -127,7 +125,9 @@ async def pray(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_prayer_mode[user_id] = True
 
     await update.message.reply_text(
-        "🙏 የጸሎት ጥያቄህን ጻፍ።"
+        "🙏 የጸሎት ጥያቄህን ጻፍ።\n\n"
+        "ምሳሌ፦\n"
+        "📝 ለቤተሰቤ እና ለስራዬ ጸሎት እፈልጋለሁ።"
     )
 
 
@@ -140,11 +140,27 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(
         "🤖 የBot ትዕዛዞች\n\n"
+        "👉 /start - መጀመሪያ\n"
         "👉 /verse - የመጽሐፍ ቅዱስ ጥቅስ\n"
         "👉 /church - የቤተ ክርስቲያን መረጃ\n"
         "👉 /pray - የጸሎት ጥያቄ\n"
-        "👉 /help - መርጃ\n"
-        "👉 /start - መጀመሪያ"
+        "👉 /help - መርጃ"
+    )
+
+
+# ======================
+# MY ID COMMAND
+# ======================
+async def myid(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not update.message or not update.effective_user:
+        return
+
+    user_id = update.effective_user.id
+
+    await update.message.reply_text(
+        f"🆔 Telegram User IDህ:\n\n"
+        f"`{user_id}`",
+        parse_mode="Markdown",
     )
 
 
@@ -167,21 +183,39 @@ async def auto_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # ======================
     if user_prayer_mode.get(user_id):
 
-        await context.bot.send_message(
-            chat_id=ADMIN_ID,
-            text=(
-                "🙏 አዲስ የጸሎት ጥያቄ\n\n"
-                f"👤 ከ: {update.effective_user.full_name}\n"
-                f"🔗 Admin: {ADMIN_USERNAME}\n\n"
-                f"🆔 User ID: {user_id}\n\n"
-                f"📝 ጥያቄ:\n{update.message.text}"
-            ),
-        )
+        prayer_text = update.message.text
 
-        await update.message.reply_text(
-            "✅ የጸሎት ጥያቄህ ተልኳል።\n"
-            "🙏 እግዚአብሔር ይስማህ!"
-        )
+        try:
+            await context.bot.send_message(
+                chat_id=ADMIN_ID,
+                text=(
+                    "🙏 አዲስ የጸሎት ጥያቄ\n\n"
+                    f"👤 ከ: {update.effective_user.full_name}\n"
+                    f"🆔 User ID: {user_id}\n\n"
+                    f"📝 ጥያቄ:\n{prayer_text}"
+                ),
+            )
+
+            admin_sent = True
+
+        except Exception as error:
+            print(f"❌ Admin message error: {error}")
+            admin_sent = False
+
+
+        # User always receives a reply
+        if admin_sent:
+            await update.message.reply_text(
+                "✅ የጸሎት ጥያቄህ ተቀብለናል።\n\n"
+                "🙏 እግዚአብሔር ጸሎትህን ይስማ!\n"
+                "❤️ ጌታ ከአንተ ጋር ይሁን።"
+            )
+        else:
+            await update.message.reply_text(
+                "✅ የጸሎት ጥያቄህ ተቀብለናል።\n\n"
+                "🙏 እግዚአብሔር ጸሎትህን ይስማ!\n"
+                "❤️ ጌታ ከአንተ ጋር ይሁን።"
+            )
 
         user_prayer_mode[user_id] = False
         return
@@ -278,6 +312,7 @@ def main():
         .build()
     )
 
+
     # ======================
     # COMMAND HANDLERS
     # ======================
@@ -301,6 +336,11 @@ def main():
         CommandHandler("help", help_command)
     )
 
+    application.add_handler(
+        CommandHandler("myid", myid)
+    )
+
+
     # ======================
     # MESSAGE HANDLER
     # ======================
@@ -310,6 +350,7 @@ def main():
             auto_reply
         )
     )
+
 
     print("🤖 Church Bot is running...")
 
