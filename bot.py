@@ -23,11 +23,8 @@ if not TOKEN:
 # ======================
 # ADMIN INFO
 # ======================
+ADMIN_ID = 417243779
 ADMIN_USERNAME = "@Abd10t"
-
-# IMPORTANT:
-# Replace this number with your real Telegram User ID.
-ADMIN_ID = 123456789
 
 
 # ======================
@@ -40,10 +37,10 @@ user_prayer_mode = {}
 # BIBLE VERSES
 # ======================
 verses = [
-    "መዝሙር 23:1 - ጌታ እረኛዬ ነው፥ ምንም አይጎድልኝም።",
-    "ዮሐንስ 3:16 - እግዚአብሔር ዓለምን እንዲህ ወደደ...",
-    "ፊልጵስዩስ 4:13 - ሁሉን ነገር በሚያበረታኝ በክርስቶስ እችላለሁ።",
-    "ሮሜ 8:28 - ሁሉም ነገር ለመልካም ይሰራል...",
+    "መዝሙር 23:1 - እግዚአብሔር እረኛዬ ነው፥ የሚያሳጣኝም የለም።",
+    "ዮሐንስ 3:16 - በእርሱ የሚያምን ሁሉ የዘላለም ሕይወት እንዲኖረው እንጂ እንዳይጠፋ እግዚአብሔር አንድያ ልጁን እስኪሰጥ ድረስ ዓለሙን እንዲሁ ወዶአልና።,
+    "ፊልጵስዩስ 4:13 - ኃይልን በሚሰጠኝ በክርስቶስ ሁሉን እችላለሁ።",
+    "ሮሜ 8:28 - 28 እግዚአብሔርንም ለሚወዱት እንደ አሳቡም ለተጠሩት ነገር ሁሉ ለበጎ እንዲደረግ እናውቃለን።",
 ]
 
 
@@ -78,7 +75,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "👉 /verse - የመጽሐፍ ቅዱስ ጥቅስ\n"
         "👉 /church - የቤተ ክርስቲያን መረጃ\n"
         "👉 /pray - የጸሎት ጥያቄ\n"
-        "👉 /help - መርጃ"
+        "👉 /help - መርጃ\n"
+        "👉 /myid - Telegram User ID"
     )
 
 
@@ -144,7 +142,8 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "👉 /verse - የመጽሐፍ ቅዱስ ጥቅስ\n"
         "👉 /church - የቤተ ክርስቲያን መረጃ\n"
         "👉 /pray - የጸሎት ጥያቄ\n"
-        "👉 /help - መርጃ"
+        "👉 /help - መርጃ\n"
+        "👉 /myid - Telegram User ID"
     )
 
 
@@ -158,9 +157,7 @@ async def myid(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
 
     await update.message.reply_text(
-        f"🆔 Telegram User IDህ:\n\n"
-        f"`{user_id}`",
-        parse_mode="Markdown",
+        f"🆔 Telegram User IDህ:\n\n{user_id}"
     )
 
 
@@ -196,25 +193,18 @@ async def auto_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 ),
             )
 
-            admin_sent = True
-
-        except Exception as error:
-            print(f"❌ Admin message error: {error}")
-            admin_sent = False
-
-
-        # User always receives a reply
-        if admin_sent:
             await update.message.reply_text(
-                "✅ የጸሎት ጥያቄህ ተቀብለናል።\n\n"
+                "✅ የጸሎት ጥያቄህ ተልኳል።\n\n"
                 "🙏 እግዚአብሔር ጸሎትህን ይስማ!\n"
                 "❤️ ጌታ ከአንተ ጋር ይሁን።"
             )
-        else:
+
+        except Exception as error:
+            print(f"❌ Admin message error: {error}")
+
             await update.message.reply_text(
-                "✅ የጸሎት ጥያቄህ ተቀብለናል።\n\n"
-                "🙏 እግዚአብሔር ጸሎትህን ይስማ!\n"
-                "❤️ ጌታ ከአንተ ጋር ይሁን።"
+                "⚠️ የጸሎት ጥያቄህን ለAdmin መላክ አልተቻለም።\n\n"
+                "እባክህ እንደገና ሞክር።"
             )
 
         user_prayer_mode[user_id] = False
@@ -312,7 +302,6 @@ def main():
         .build()
     )
 
-
     # ======================
     # COMMAND HANDLERS
     # ======================
@@ -340,7 +329,6 @@ def main():
         CommandHandler("myid", myid)
     )
 
-
     # ======================
     # MESSAGE HANDLER
     # ======================
@@ -351,8 +339,7 @@ def main():
         )
     )
 
-
-    print("🤖 Church Bot is running...")
+    print("🤖 Sech Duna Church Bot is running...")
 
     # python-telegram-bot v21.6
     application.run_polling()
